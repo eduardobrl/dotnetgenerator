@@ -1,25 +1,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-
+import generate from './command/generate';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-
-function getTerminal()
-{
-	let terminal = vscode.window.activeTerminal;
-
-	if(typeof terminal === "undefined")
-	{
-		terminal = vscode.window.createTerminal();
-	}
-
-	return terminal;
-}
-
-
-
-
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -39,63 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('Hello World from dotnetGenerator!');
 	}),
 
-		vscode.commands.registerCommand('dotnetgenerator.generate', async () => {
-
-		const terminal = getTerminal();
-		
-		const options = [
-			{template : "Console Application", shortname: "console"},
-			{template : "Class library", shortname: "classlib"},
-			{template : "WPF Application", shortname: "wpf"},
-			{template : "WPF Class library", shortname: "wpflib"},
-			{template : "WPF Custom Control Library", shortname: "wpfcustomcontrollib"},
-			{template : "WPF User Control Library", shortname: "wpfusercontrollib"},
-			{template : "Windows Forms (WinForms) Application", shortname: "winforms"},
-			{template : "Windows Forms (WinForms) Class library", shortname: "winformslib"},
-			{template : "Unit Test Project", shortname: "mstest"},
-			{template : "NUnit 3 Test Project", shortname: "nunit"},
-			{template : "NUnit 3 Test Item", shortname: "nunit-test"},
-			{template : "Razor Component", shortname: "viewimports"},
-			{template : "Razor Page", shortname: "viewstart"},
-			{template : "MVC ViewImports", shortname: "viewstart"},
-			{template : "MVC ViewStart", shortname: "blazorserver"},
-			{template : "Blazor WebAssembly App", shortname: "blazorwasm"},
-			{template : "ASP.NET Core Empty", shortname: "web"},
-			{template : "ASP.NET Core Web App (Model-View-Controller)", shortname: "mvc"},
-			{template : "ASP.NET Core Web App", shortname: "razor"},
-			{template : "ASP.NET Core with Angular", shortname: "angular"},
-			{template : "ASP.NET Core with React.js", shortname: "react"},
-			{template : "ASP.NET Core with React.js and Redux", shortname: "reactredux"},
-			{template : "Razor Class Library", shortname: "razorclasslib"},
-			{template : "ASP.NET Core Web API", shortname: "webapi"},
-			{template : "ASP.NET Core gRPC Service", shortname: "grpc"},
-			{template : "dotnet gitignore file", shortname: "gitignore"},
-			{template : "global.json file", shortname: "globaljson"},
-			{template : "NuGet Config", shortname: "nugetconfig"},
-			{template : "Dotnet local tool manifest file", shortname: "tool-manifest"},
-			{template : "Web Config", shortname: "webconfig"},
-			{template : "Solution File", shortname: "sln"},
-
-		];
-		const quickpicks: string[] = [];
-		options.map(opt => quickpicks.push(opt.template));
-
-		const template = await vscode.window.showQuickPick(quickpicks, {
-			placeHolder: 'Select project template',
-			onDidSelectItem: item => vscode.window.showInformationMessage(`${item}`)
-		});
-
-		const authentication = await vscode.window.showQuickPick(
-			['None', 'Individual', 'IndividualB2C', 'SingleOrg', 'MultiOrg', 'Windows'], {
-			placeHolder: 'Autentication',
-			onDidSelectItem: item => vscode.window.showInformationMessage(`${item}`)
-		});
-
-		const i = options.findIndex(opt => opt.template === template);
-		terminal.sendText(`dotnet new ${options[i].shortname} -au ${authentication}`);
-
-
-	}),
+		vscode.commands.registerCommand('dotnetgenerator.generate', generate),
 
 	vscode.commands.registerCommand('dotnetgenerator.migrationCreate', async () => {
 
