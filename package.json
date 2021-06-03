@@ -13,7 +13,8 @@
     "onCommand:dotnetgenerator.helloWorld",
     "onCommand:dotnetgenerator.generate",
     "onCommand:dotnetgenerator.migrationCreate",
-    "onCommand:dotnetgenerator.migrationRun"
+    "onCommand:dotnetgenerator.migrationRun",
+	"onCommand:dotnetgenerator.aspnetCodeGenerator"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -35,10 +36,21 @@
         "title": ".NET Gen: Migration Run"
       },
       {
-        "command": "dotnetgenerator.crud",
-        "title": ".NET Gen: Crud from model"
+        "command": "dotnetgenerator.aspnetCodeGenerator",
+        "title": ".NET Gen: AspNet code"
       }
-    ]
+    ],
+    "configuration": {
+		"title": ".Net Generator",
+		"properties": {
+		  "models.folder": {
+			"type": "boolean",
+			"scope": "resource",
+			"default": false,
+			"description": "%models.Folder%"
+		  }
+		}
+	  }
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",

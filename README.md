@@ -10,6 +10,12 @@ Dotnet helper extension to generate project and others artifacts.
 * .NET SDK
 * .NET CLI (included with .NET SDK)
 
+* aspnet-codegenerator
+Which can be installed using:
+`dotnet tool install -g dotnet-aspnet-codegenerator`
+
+
+
 ## Extension Settings
 
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
