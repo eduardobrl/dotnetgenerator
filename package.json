@@ -1,0 +1,64 @@
+{
+  "name": "dotnetgenerator",
+	"displayName": "dotnetGenerator",
+	"description": "Extension to generate .net scaffolds",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.56.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+        "onCommand:dotnetgenerator.helloWorld",
+		"onCommand:dotnetgenerator.generate",
+		"onCommand:dotnetgenerator.migrationCreate",
+		"onCommand:dotnetgenerator.migrationRun"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "dotnetgenerator.helloWorld",
+				"title": "Hello World"
+			},
+			{
+				"command": "dotnetgenerator.generate",
+				"title": ".NET Gen: Project"
+			},
+			{
+				"command": "dotnetgenerator.migrationCreate",
+				"title": ".NET Gen: Migration Create"
+			},
+			{
+				"command": "dotnetgenerator.migrationRun",
+				"title": ".NET Gen: Migration Run"
+			},
+			{
+				"command": "dotnetgenerator.crud",
+				"title": ".NET Gen: Crud from model"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "yarn run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "yarn run compile && yarn run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.56.0",
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.4",
+		"@types/node": "^12.11.7",
+		"eslint": "^7.19.0",
+		"@typescript-eslint/eslint-plugin": "^4.14.1",
+		"@typescript-eslint/parser": "^4.14.1",
+		"glob": "^7.1.6",
+		"mocha": "^8.2.1",
+		"typescript": "^4.1.3",
+		"vscode-test": "^1.5.0"
+	}
+}
