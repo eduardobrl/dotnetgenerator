@@ -20,10 +20,6 @@
   "contributes": {
     "commands": [
       {
-        "command": "dotnetgenerator.helloWorld",
-        "title": "Hello World"
-      },
-      {
         "command": "dotnetgenerator.generate",
         "title": ".NET Gen: Project"
       },

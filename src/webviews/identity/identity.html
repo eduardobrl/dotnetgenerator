@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identity Options</title>
+
+    <style>
+        .col {
+            display: flex;
+            flex-direction: column;
+        };
+
+
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+    </style>
+
+</head>
+<body onload="init()">
+    <div id="container">
+        <h1>Select the source code you want to generate </h1>
+
+        <form action="" method="post" id="main-form">
+            <div class="col" id="main-container-form">
+
+                <div class="row">
+                    <input type="checkbox" name="All" id="All" onClick="toggle(this)">
+                    <label for="All"> All</label>
+                </div>
+            </div>
+
+
+            <div id="container-submit">
+                <button type="submit">Gerar</button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <script>
+        const vscode = acquireVsCodeApi();
+
+        const options = [
+            "Account.AccessDenied",
+            "Account.ConfirmEmail",
+            "Account.ExternalLogin",
+            "Account.ForgotPassword",
+            "Account.ForgotPasswordConfirmation",
+            "Account.Lockout",
+            "Account.Login",
+            "Account.LoginWith2fa",
+            "Account.LoginWithRecoveryCode",
+            "Account.Logout",
+            "Account.Manage._Layout",
+            "Account.Manage._ManageNav",
+            "Account.Manage._StatusMessage",
+            "Account.Manage.ChangePassword",
+            "Account.Manage.DeletePersonalData",
+            "Account.Manage.Disable2fa",
+            "Account.Manage.DownloadPersonalData",
+            "Account.Manage.EnableAuthenticator",
+            "Account.Manage.ExternalLogins",
+            "Account.Manage.GenerateRecoveryCodes",
+            "Account.Manage.Index",
+            "Account.Manage.PersonalData",
+            "Account.Manage.ResetAuthenticator",
+            "Account.Manage.SetPassword",
+            "Account.Manage.TwoFactorAuthentication",
+            "Account.Register",
+            "Account.ResetPassword",
+            "Account.ResetPasswordConfirmation "
+        ];
+
+        function toggle(source) {
+            checkboxes = document.getElementsByClassName('option');
+            for(var i=0, n=checkboxes.length;i<n;i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+
+        function init()
+        {
+            const form = document.getElementById('main-container-form');
+            options.map(opt => form.insertAdjacentHTML('beforeend',
+                `
+                <div class="row">
+                <input type="checkbox" name=${opt} id="${opt}" class="option">
+                <label for="${opt}"> ${opt}</label>
+                </div>
+
+                `
+            ));
+
+        };
+
+        function processForm(e) {
+            if (e.preventDefault) {e.preventDefault();}
+
+            const form = document.getElementById('main-form');
+
+            const formData = new FormData(form);
+
+            formData.delete('All')
+
+            const value = Object.fromEntries(formData.entries());
+
+            vscode.postMessage(value);
+            
+            return false;
+        }
+
+        var form = document.getElementById('main-form');
+        if (form.attachEvent) {
+            form.attachEvent("submit", processForm);
+        } else {
+            form.addEventListener("submit", processForm);
+        }
+
+    </script>
+
+</body>
+</html>

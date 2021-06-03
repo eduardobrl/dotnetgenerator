@@ -1,13 +1,13 @@
 import * as vscode from 'vscode';
 import { getTerminal, getUserInputFromOptions } from '../utils';
+import * as path from 'path';
+import * as fs from 'fs';
 
+let currentContext : vscode.ExtensionContext;
 
-export async function aspnetGenerate() {
+export async function aspnetGenerate(context : vscode.ExtensionContext) {
     const terminal = getTerminal();
-
-    const migration = await vscode.window.showInputBox({
-        value: 'Model Name',
-    });
+    currentContext = context;
 
     const generators = [
         {description: "Area", command: area},
@@ -19,7 +19,7 @@ export async function aspnetGenerate() {
 
     const generator = await getUserInputFromOptions('Select generator', generators);
 
-    generator();
+    await generator();
 
 }
 
@@ -57,6 +57,42 @@ async function controller()
 
 async function identity()
 {
+    const dbcontext = await vscode.window.showInputBox({
+        value: 'Dbcontext (fullnamespace.dbcontextName)',
+    });
+
+
+    const panel = vscode.window.createWebviewPanel(
+        'genIdentity',
+        'Indentity Generator Options',
+        vscode.ViewColumn.One,
+        {
+          enableScripts: true
+        }
+      );
+
+    panel.webview.onDidReceiveMessage(
+        (message : Object) => {
+            const files = Object.keys(message);
+            let strfiles = "";
+            files.map(file => strfiles += file + ";" );
+
+            vscode.window.showErrorMessage(strfiles);
+
+            const terminal = getTerminal();
+
+            terminal.sendText(`dotnet aspnet-codegenerator identity -dc ${dbcontext} --files "${strfiles}"`);
+
+        },
+        undefined,
+        currentContext.subscriptions
+        );
+
+    const filePath: vscode.Uri = vscode.Uri.file(path.join(currentContext.extensionPath, 
+        'src', 'webviews','identity' ,'identity.html'));
+    panel.webview.html = fs.readFileSync(filePath.fsPath, 'utf8');
+    
+
 
 }
 
